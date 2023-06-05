@@ -385,10 +385,13 @@ class PourWaterPosControlEnv(FluidEnv):
 
         in_poured_glass = self.in_glass(water_state, self.poured_glass_states, self.poured_border, self.poured_height)
         in_control_glass = self.in_glass(water_state, self.glass_states, self.border, self.height)
+        # print("in_poured_glass: ", np.sum(in_poured_glass))
+        # print("in_control_glass: ", np.sum(in_control_glass))
         good_water = in_poured_glass * (1 - in_control_glass)
         good_water_num = np.sum(good_water)
 
         reward = float(good_water_num) / water_num
+        # print(self.inner_step, "reward: ", reward)
         return reward
 
     def _get_info(self):
@@ -421,6 +424,7 @@ class PourWaterPosControlEnv(FluidEnv):
         move = np.clip(move, a_min=self.action_space.low[0], a_max=self.action_space.high[0])
         rotate = np.clip(rotate, a_min=self.action_space.low[2], a_max=self.action_space.high[2])
         dx, dy, dtheta = move[0], move[1], rotate
+        self.action = [dx, dy, dtheta]
         x, y, theta = self.glass_x + dx, self.glass_y + dy, self.glass_rotation + dtheta
 
         # check if the movement of the pouring glass collide with the poured glass.

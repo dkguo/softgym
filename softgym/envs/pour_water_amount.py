@@ -76,8 +76,8 @@ class PourWaterAmountPosControlEnv(PourWaterPosControlEnv):
             all_states = np.concatenate((all_states, indicator_box_line_states), axis=0)
         
         pyflex.set_shape_states(all_states)
-        if self.line_box_x is not None:
-            pyflex.step(render=True)
+        # if self.line_box_x is not None:
+        #     pyflex.step(render=True)
             # time.sleep(20)
 
     def set_scene(self, config, states=None):

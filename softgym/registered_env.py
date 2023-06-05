@@ -1,6 +1,7 @@
 from softgym.envs.pour_water import PourWaterPosControlEnv
 from softgym.envs.pour_water_amount import PourWaterAmountPosControlEnv
 from softgym.envs.pass_water import PassWater1DEnv
+from softgym.envs.pour_water_scene_graph import PourWaterSceneGraphEnv
 from softgym.envs.rope_flatten import RopeFlattenEnv
 from softgym.envs.rope_configuration import RopeConfigurationEnv
 from softgym.envs.cloth_flatten import ClothFlattenEnv
@@ -19,7 +20,7 @@ env_arg_dict = {
                   'render': True,
                   'action_repeat': 8,
                   'headless': True,
-                  'num_variations': 1000,
+                  'num_variations': 10,
                   'horizon': 100,
                   'use_cached_states': True,
                   'camera_name': 'default_camera'},
@@ -30,10 +31,21 @@ env_arg_dict = {
                         'deterministic': False,
                         'render': True,
                         'headless': True,
-                        'num_variations': 1000,
+                        'num_variations': 1,
                         'use_cached_states': True,
                         'horizon': 100,
                         'camera_name': 'default_camera'},
+    'PourWaterSceneGraph': {'observation_mode': 'cam_rgb',
+                            'action_mode': 'rotation_bottom',
+                            'render_mode': 'fluid',
+                            'action_repeat': 8,
+                            'deterministic': False,
+                            'render': True,
+                            'headless': True,
+                            'num_variations': 1,
+                            'use_cached_states': True,
+                            'horizon': 100,
+                            'camera_name': 'default_camera'},
     'RopeFlatten': {
         'observation_mode': 'cam_rgb',
         'action_mode': 'picker',
@@ -183,6 +195,7 @@ env_arg_dict = {
 SOFTGYM_ENVS = OrderedDict({
     'PourWater': PourWaterPosControlEnv,
     'PourWaterAmount': PourWaterAmountPosControlEnv,
+    'PourWaterSceneGraph': PourWaterSceneGraphEnv,
     'PassWater': PassWater1DEnv,
     'ClothFlatten': ClothFlattenEnv,
     'ClothFold': ClothFoldEnv,

@@ -86,6 +86,7 @@ class FlexEnv(gym.Env):
 
         self.cached_configs, self.cached_init_states = self.generate_env_variation(num_variations)
         if self.save_cached_states:
+            os.makedirs(osp.dirname(cached_states_path), exist_ok=True)
             with open(cached_states_path, 'wb') as handle:
                 pickle.dump((self.cached_configs, self.cached_init_states), handle, protocol=pickle.HIGHEST_PROTOCOL)
             print('{} config and state pairs generated and saved to {}'.format(len(self.cached_init_states), cached_states_path))
