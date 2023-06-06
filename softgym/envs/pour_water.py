@@ -28,6 +28,7 @@ class PourWaterPosControlEnv(FluidEnv):
         self.action_mode = action_mode
         self.wall_num = 5  # number of glass walls. floor/left/right/front/back
         super().__init__(**kwargs)
+        print('variation: ', self.num_variations, 'current config id: ', self.current_config_id)
         self.get_cached_configs_and_states(cached_states_path, self.num_variations)
         if observation_mode in ['point_cloud', 'key_point']:
             if observation_mode == 'key_point':
