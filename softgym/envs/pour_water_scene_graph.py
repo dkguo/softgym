@@ -51,6 +51,8 @@ class PourWaterSceneGraphEnv(PourWaterPosControlEnv):
 
         in_poured_glass = self.in_glass(water_state, self.poured_glass_states, self.poured_border, self.poured_height)
         in_control_glass = self.in_glass(water_state, self.glass_states, self.border, self.height)
+        control_water = in_control_glass * (1 - in_poured_glass)
+        control_water_num = np.sum(control_water)
         good_water = in_poured_glass * (1 - in_control_glass)
         good_water_num = np.sum(good_water)
 
@@ -61,16 +63,37 @@ class PourWaterSceneGraphEnv(PourWaterPosControlEnv):
 
         prev_in_poured_glass = self.in_glass(prev_water_state, prev_poured_glass_states, self.poured_border, self.poured_height)
         prev_in_control_glass = self.in_glass(prev_water_state, prev_glass_states, self.border, self.height)
+        prev_control_water = prev_in_control_glass * (1 - prev_in_poured_glass)
+        prev_control_water_num = np.sum(prev_control_water)
         prev_good_water = prev_in_poured_glass * (1 - prev_in_control_glass)
         prev_good_water_num = np.sum(prev_good_water)
 
-        diff = float(good_water_num - prev_good_water_num) / water_num
+        good_diff = float(good_water_num - prev_good_water_num) / water_num
+        control_diff = float(prev_control_water_num - control_water_num) / water_num
+
+        # binary 2 + panalty action 10 + trajectory (bpat)
+        reward = 0
+        if self.inner_step < 17 * 8:
+            # at the beginning, control water shouldn't reduce
+            reward += -1 if control_diff > 0 else 0
+
+            dx, dy, dtheta = self.action
+            panalty = 10000. * (-dx ** 2 - dy ** 2 + dtheta ** 2)
+            reward -= panalty
+
+        else:
+            reward += 1 if control_diff > 0 else 0
+            reward += 1 if good_diff > 0 else 0
+
+            dx, dy, dtheta = self.action
+            panalty = 10000. * (dx ** 2 + dy ** 2 - dtheta ** 2)
+            reward -= panalty
 
         # binary 2 + panalty action 10
-        reward = 1 if diff > 0 else 0
-        dx, dy, dtheta = self.action
-        panalty = 10000. * (dx ** 2 + dy ** 2 - dtheta ** 2)
-        reward -= panalty
+        # reward = 1 if diff > 0 else 0
+        # dx, dy, dtheta = self.action
+        # panalty = 10000. * (dx ** 2 + dy ** 2 - dtheta ** 2)
+        # reward -= panalty
 
         # binary 2 + panalty action 9 + large rotation space
         # reward = 1 if diff > 0 else 0
