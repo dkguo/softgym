@@ -25,7 +25,7 @@ class PourWaterSceneGraphEnv(PourWaterPosControlEnv):
 
         super().__init__(observation_mode, action_mode, config, cached_states_path, **kwargs)
 
-        self.scene_graph = load_scene_graph()
+        # self.scene_graph = load_scene_graph()
 
     def get_state(self):
         state_dic = super().get_state()
