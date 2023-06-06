@@ -60,7 +60,6 @@ class PourWaterPosControlEnv(FluidEnv):
         self.reward_min = 0
         self.reward_max = 1
         self.reward_range = self.reward_max - self.reward_min
-        print('current config id: ', self.current_config_id)
 
     def get_default_config(self):
         config = {
@@ -144,6 +143,7 @@ class PourWaterPosControlEnv(FluidEnv):
             config_idx = 0
         else:
             config_idx = np.random.randint(len(self.config_variations))
+            print("pour water get config {}".format(config_idx))
 
         self.config = self.config_variations[config_idx]
         return self.config
