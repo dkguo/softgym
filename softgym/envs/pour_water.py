@@ -143,7 +143,8 @@ class PourWaterPosControlEnv(FluidEnv):
             config_idx = 0
         else:
             config_idx = np.random.randint(len(self.config_variations))
-            print("pour water get config {}".format(config_idx))
+
+        print("pour water get config {}".format(config_idx))
 
         self.config = self.config_variations[config_idx]
         return self.config
