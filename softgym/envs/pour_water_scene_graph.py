@@ -277,19 +277,19 @@ class PourWaterSceneGraphEnv(PourWaterPosControlEnv):
         }
         return config
 
-    def generate_env_variation(self, num_variations=5, config=None, **kwargs):
-        self.cached_configs = []
-        self.cached_init_states = []
-        config = self.get_default_config()
-        config_variations = [copy.deepcopy(config) for _ in range(num_variations)]
-        for idx in range(num_variations):
-            self.set_scene(config_variations[idx])
-            init_state = copy.deepcopy(self.get_state())
-
-            self.cached_configs.append(config_variations[idx])
-            self.cached_init_states.append(init_state)
-
-        return self.cached_configs, self.cached_init_states
+    # def generate_env_variation(self, num_variations=5, config=None, **kwargs):
+    #     self.cached_configs = []
+    #     self.cached_init_states = []
+    #     config = self.get_default_config()
+    #     config_variations = [copy.deepcopy(config) for _ in range(num_variations)]
+    #     for idx in range(num_variations):
+    #         self.set_scene(config_variations[idx])
+    #         init_state = copy.deepcopy(self.get_state())
+    #
+    #         self.cached_configs.append(config_variations[idx])
+    #         self.cached_init_states.append(init_state)
+    #
+    #     return self.cached_configs, self.cached_init_states
 
     def initialize_camera(self):
         self.camera_params = {
