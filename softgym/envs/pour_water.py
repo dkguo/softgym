@@ -28,7 +28,7 @@ class PourWaterPosControlEnv(FluidEnv):
         self.action_mode = action_mode
         self.wall_num = 5  # number of glass walls. floor/left/right/front/back
         super().__init__(**kwargs)
-        print('variation: ', self.num_variations, 'current config id: ', self.current_config_id)
+        print('variation: ', self.num_variations)
         self.get_cached_configs_and_states(cached_states_path, self.num_variations)
         if observation_mode in ['point_cloud', 'key_point']:
             if observation_mode == 'key_point':
@@ -60,6 +60,7 @@ class PourWaterPosControlEnv(FluidEnv):
         self.reward_min = 0
         self.reward_max = 1
         self.reward_range = self.reward_max - self.reward_min
+        print('current config id: ', self.current_config_id)
 
     def get_default_config(self):
         config = {
