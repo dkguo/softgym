@@ -71,23 +71,40 @@ class PourWaterSceneGraphEnv(PourWaterPosControlEnv):
         good_diff = float(good_water_num - prev_good_water_num) / water_num
         control_diff = float(prev_control_water_num - control_water_num) / water_num
 
-        # binary 2 + panalty action 10 + trajectory (bpat2)
+        # scene_graph
         reward = 0
-        if self.inner_step < 17 * 8:
-            # at the beginning, control water shouldn't reduce
-            reward += -2 if control_diff > 0 else 0
-
-            dx, dy, dtheta = self.action
-            panalty = 10000. * (-dx ** 2 - dy ** 2 + dtheta ** 2)
-            reward -= panalty
-
-        else:
-            reward += 1 if control_diff > 0 else 0
+        # area
+        reward += good_water_num / water_num
+        # edge
+        if self.inner_step > 16 * 8:
             reward += 1 if good_diff > 0 else 0
-
+        # trajectory
+        if self.inner_step > 16 * 8:
             dx, dy, dtheta = self.action
             panalty = 10000. * (dx ** 2 + dy ** 2 - dtheta ** 2)
             reward -= panalty
+
+
+
+
+
+        # # binary 2 + panalty action 10 + trajectory (bpat2)
+        # reward = 0
+        # if self.inner_step < 17 * 8:
+        #     # at the beginning, control water shouldn't reduce
+        #     reward += -2 if control_diff > 0 else 0
+        #
+        #     dx, dy, dtheta = self.action
+        #     panalty = 10000. * (-dx ** 2 - dy ** 2 + dtheta ** 2)
+        #     reward -= panalty
+        #
+        # else:
+        #     reward += 1 if control_diff > 0 else 0
+        #     reward += 1 if good_diff > 0 else 0
+        #
+        #     dx, dy, dtheta = self.action
+        #     panalty = 10000. * (dx ** 2 + dy ** 2 - dtheta ** 2)
+        #     reward -= panalty
 
         # binary 2 + panalty action 10 + trajectory (bpat)
         # reward = 0

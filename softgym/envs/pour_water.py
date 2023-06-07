@@ -427,7 +427,7 @@ class PourWaterPosControlEnv(FluidEnv):
         move = np.clip(move, a_min=self.action_space.low[0], a_max=self.action_space.high[0])
         rotate = np.clip(rotate, a_min=self.action_space.low[2], a_max=self.action_space.high[2])
         dx, dy, dtheta = move[0], move[1], rotate
-        self.action = [dx, dy, dtheta]
+        prev_xyt = self.glass_x, self.glass_y, self.glass_rotation
         x, y, theta = self.glass_x + dx, self.glass_y + dy, self.glass_rotation + dtheta
 
         # check if the movement of the pouring glass collide with the poured glass.
@@ -439,6 +439,8 @@ class PourWaterPosControlEnv(FluidEnv):
         else:  # invalid move, old state becomes the same as the current state
             self.glass_states[:, 3:6] = self.glass_states[:, :3].copy()
             self.glass_states[:, 10:] = self.glass_states[:, 6:10].copy()
+
+        self.action = [self.glass_x - prev_xyt[0], self.glass_y - prev_xyt[1], self.glass_rotation - prev_xyt[2]]
 
         # pyflex takes a step to update the glass and the water fluid
         self.set_shape_states(self.glass_states, self.poured_glass_states)
