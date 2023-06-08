@@ -76,13 +76,13 @@ class PourWaterSceneGraphEnv(PourWaterPosControlEnv):
         # area
         reward += good_water_num / water_num
         # edge
-        if self.inner_step > 16 * 8:
-            reward += 1 if good_diff > 0 else 0
-        # trajectory
         # if self.inner_step > 16 * 8:
-        #     dx, dy, dtheta = self.action
-        #     panalty = 10000. * (dx ** 2 + dy ** 2 - dtheta ** 2)
-        #     reward -= panalty
+        #     reward += 1 if good_diff > 0 else 0
+        # trajectory
+        if self.inner_step > 16 * 8:
+            dx, dy, dtheta = self.action
+            panalty = 10000. * (dx ** 2 + dy ** 2 - dtheta ** 2)
+            reward -= panalty
 
 
 
